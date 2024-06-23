@@ -1,0 +1,36 @@
+body {
+    background: rgb(66, 209, 66);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+input {
+    border: none;
+}
+
+form {
+    width: 300px;
+}
+.clear {
+    background: transparent;
+    border: none;
+    color: aliceblue;
+}
+.login {
+    background: white;
+    border: none;
+}
+.register {
+    background: transparent;
+    color: aliceblue;
+    border: 1px solid white;
+}
+.error {
+    color: aliceblue;
+    background-color: red;
+    display: none;
+}
+.form-field {
+    margin-bottom: 10px;
+}
