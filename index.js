@@ -29,14 +29,19 @@ function login(){
   (form.email().value, form.password().value).then(response => {
      window.location .href = "pages/home/home.html"
   }).catch(error => {
-     alert("Login ou Senha Incorreta")
-  });
-  console.log('depois')
+     alert(getErrorMessage(error));
+  })
    
 }
-
+function getErrorMessage(error){
+    if (error.code == "auth/user-not-found"){
+        return "Usuario não encontrado"
+    }
+    return error.message;
+}
 function register(){
-    window.location .href = "pages/register/register.html"
+    showLoading();
+   // window.location .href = "pages/register/register.html"
 }
 //Verifica se o Usuario digitou o Email
 function RetornarEmailError(){
