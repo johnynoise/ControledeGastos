@@ -1,11 +1,71 @@
 function onChangeEmail() {
-    toggleButtonDisable();
-    RetornarEmailError();
+    toggleButtonsDisable();
+    toggleEmailErrors();
 }
+
 function onChangePassword() {
-    toggleButtonDisable();
+    toggleButtonsDisable();
     togglePasswordErrors();
 }
+
+function login() {
+    showLoading();
+    firebase.auth().signInWithEmailAndPassword(
+        form.email().value, form.password().value
+    ).then(() => {
+        hideLoading();
+        window.location.href = "pages/home/home.html";
+    }).catch(error => {
+        hideLoading();
+        alert(getErrorMessage(error));
+    });
+}
+
+function register() {
+    window.location.href = "pages/register/register.html";
+}
+
+function recoverPassword() {
+    showLoading();
+    firebase.auth().sendPasswordResetEmail(form.email().value).then(() => {
+        hideLoading();
+        alert('Email enviado com sucesso');
+    }).catch(error => {
+        hideLoading();
+        alert(getErrorMessage(error));
+    });
+}
+
+function getErrorMessage(error) {
+    if (error.code == "auth/user-not-found") {
+        return "Usuário nao encontrado";
+    }
+    if (error.code == "auth/wrong-password") {
+        return "Senha inválida";
+    }
+    return error.message;
+}
+
+function toggleEmailErrors() {
+    const email = form.email().value;
+    form.emailRequiredError().style.display = email ? "none" : "block";
+    
+    form.emailInvalidError().style.display = validateEmail(email) ? "none" : "block";
+}
+
+function togglePasswordErrors() {
+    const password = form.password().value;
+    form.passwordRequiredError().style.display = password ? "none" : "block";
+}
+
+function toggleButtonsDisable() {
+    const emailValid = isEmailValid();
+    form.recoverPasswordButton().disabled = !emailValid;
+
+    const passwordValid = isPasswordValid();
+    form.loginButton().disabled = !emailValid || !passwordValid;
+}
+
 function isEmailValid() {
     const email = form.email().value;
     if (!email) {
@@ -13,69 +73,17 @@ function isEmailValid() {
     }
     return validateEmail(email);
 }
-//Verifica
+
 function isPasswordValid() {
-    const password = form.password().value;
-    if (!password) {
-        return false;
-    }
-    return true;
-}
-
-function login(){
-    //Autenticação do Usuario no firebase
- // console.log('antes');
-  firebase.auth().signInWithEmailAndPassword
-  (form.email().value, form.password().value).then(response => {
-     window.location .href = "pages/home/home.html"
-  }).catch(error => {
-     alert(getErrorMessage(error));
-  })
-   
-}
-function getErrorMessage(error){
-    if (error.code == "auth/user-not-found"){
-        return "Usuario não encontrado"
-    }
-    return error.message;
-}
-function register(){
-    showLoading();
-   // window.location .href = "pages/register/register.html"
-}
-//Verifica se o Usuario digitou o Email
-function RetornarEmailError(){
-    const email = form.email().value;
-    form.emailRequiredError().style.display = email ? "none" : "block";
-    form.emailInvalid().style.display= validateEmail(email) ? "none" : "block";
-
-    }
-
-//Habilita o Botão caso o Usuario informe o email valido
-function toggleButtonDisable(){
-    const emailValid = isEmailValid();
-   form.recoveryPassword.disabled = !emailValid;
-
-    const passwordValid = isPasswordValid();
-    form.loginbutton().disabled =
-        !emailValid || !passwordValid;
-}
-//Informa o Usuario que a senha é obrigatoria
-function togglePasswordErrors() {
-    const password = document.getElementById('password').value;
-    form.passwordError().style.display = password ? "none" : "block";
-
+    return form.password().value ? true : false;
 }
 
 const form = {
-    email: () =>document.getElementById('email'),
-    password: () => document.getElementById('password'),
-    passwordError: () => document.getElementById('password-error'),
-    emailInvalid: () => document.getElementById('email-error-invalid'),
-    loginbutton: () => document.getElementById('login-button'),
-    emailRequiredError: () => document.getElementById('email-error'),
-    recoveryPassword: () => documen.getElementById('recover-password-button')
-    
-
-}
-
+    email: () => document.getElementById("email"),
+    emailInvalidError: () => document.getElementById("email-invalid-error"),
+    emailRequiredError: () => document.getElementById("email-required-error"),
+    loginButton: () => document.getElementById("login-button"),
+    password: () => document.getElementById("password"),
+    passwordRequiredError: () => document.getElementById("password-required-error"),
+    recoverPasswordButton: () => document.getElementById("recover-password-button"),
+} 
