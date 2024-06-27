@@ -3,12 +3,18 @@ body {
   
     height: 100vh;
 }
+body {
+    background: rgb(66, 209, 66);
+  
+    height: 100vh;
+}
 input {
     border: none;
 }
 
 form {
     width: 300px;
+    
 }
 
 .error {

@@ -40,3 +40,23 @@ body {
 .loading label{
     font-size: 24px;
 }
+
+.form-field {
+    margin-bottom: 10px;
+}
+.clear {
+    background: transparent;
+    border: none;
+    color: aliceblue;
+}
+.solid {
+    background: rgba(white);
+    color: rgb(25, 189, 19);
+    border: 1px solid white;
+}
+
+.login {
+    background: transparent;
+    border: none;
+    color: white;
+}
